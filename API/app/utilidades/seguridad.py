@@ -14,10 +14,10 @@ from dotenv import load_dotenv
 # Cargar variables de entorno
 load_dotenv()
 
-# Configuracion de seguridad
-ALGORITMO = "HS256"
-CLAVE_SECRETA = "supersecret"
-TIEMPO_EXPIRACION_TOKEN = 30  # minutos
+# Configuración de seguridad desde variables de entorno
+ALGORITMO = os.getenv("JWT_ALGORITHM", "HS256")
+CLAVE_SECRETA = os.getenv("JWT_SECRET_KEY", "SECRET_KEY")
+TIEMPO_EXPIRACION_TOKEN = int(os.getenv("JWT_EXPIRATION_MINUTES", "30"))  # minutos
 
 # Contexto para hash de contraseñas
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
