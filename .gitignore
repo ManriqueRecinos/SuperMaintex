@@ -1,17 +1,19 @@
+
 /API/venv
 setup.py
 README.md
 
+# Archivos de configuración de entorno
 /API/.env
-
 /API/test_db_connection.py
 
-test_db_connection.py
-
-
+# Carpetas cache de base de datos
 /API/app/__pycache__
 /API/app/db/__pycache__
 /API/app/esquemas/__pycache__/
 /API/app/modelos/__pycache__/
 /API/app/rutas/__pycache__/
 /API/app/utilidades/__pycache__/
+
+# Archivos de configuración de IDE
+/View/node_modules
