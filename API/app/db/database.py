@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Obtener la URL de conexión desde las variables de entorno
-DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://db-supermaintex_owner:npg_zmLCa4XYnj0V@ep-hidden-field-a48uvfu4-pooler.us-east-1.aws.neon.tech/db-supermaintex?sslmode=require")
+DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://neondb_owner:npg_4jHgZsDbPyL3@ep-late-forest-a48unt2c-pooler.us-east-1.aws.neon.tech/neondb?sslmode=require")
 
 # Corregir el prefijo de la URL si es necesario (postgres:// -> postgresql://)
 if DATABASE_URL.startswith("postgres://"):
