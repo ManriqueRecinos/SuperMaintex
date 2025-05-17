@@ -2,10 +2,10 @@ from pydantic import BaseModel, EmailStr, Field
 from typing import Optional, List
 from datetime import datetime
 
-# Esquema para Rol
+# Esquemas para Rol
 class RolBase(BaseModel):
     rol: str
-    descripcion: Optional
+    descripcion: Optional[str] = None
     estado: int = 1
 
 class RolCrear(RolBase):
@@ -13,10 +13,11 @@ class RolCrear(RolBase):
 
 class Rol(RolBase):
     id: int
+    
     class Config:
         orm_mode = True
 
-# Esquema para Departamento
+# Esquemas para Departamento
 class DepartamentoBase(BaseModel):
     depa: str
     descripcion: Optional[str] = None
@@ -27,11 +28,11 @@ class DepartamentoCrear(DepartamentoBase):
 
 class Departamento(DepartamentoBase):
     id: int
-
+    
     class Config:
         orm_mode = True
 
-# Esquema para Usuario
+# Esquemas para Usuario
 class UsuarioBase(BaseModel):
     nombre: str
     usuario: str
@@ -42,9 +43,9 @@ class UsuarioBase(BaseModel):
     estado: int = 1
 
 class UsuarioCrear(UsuarioBase):
-    contrasena = str
+    contrasenia: str
 
-class usuarioActualizar(BaseModel):
+class UsuarioActualizar(BaseModel):
     nombre: Optional[str] = None
     correo: Optional[EmailStr] = None
     carnet: Optional[str] = None
@@ -57,7 +58,7 @@ class Usuario(UsuarioBase):
     fecha_creacion: datetime
     rol: Rol
     departamento: Departamento
-
+    
     class Config:
         orm_mode = True
 
@@ -66,19 +67,19 @@ class UsuarioSinSensible(BaseModel):
     nombre: str
     usuario: str
     correo: EmailStr
-    carnet: Optional[str] = None
+    carnet: Optional[str]
     id_rol: int
     id_depa: int
     estado: int
     fecha_creacion: datetime
-
+    
     class Config:
         orm_mode = True
 
-# Esquema para autenticacion
+# Esquemas para autenticación
 class CredencialesLogin(BaseModel):
     usuario: str
-    contrasena: str
+    contrasenia: str
 
 class Token(BaseModel):
     access_token: str

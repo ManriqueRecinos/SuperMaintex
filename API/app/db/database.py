@@ -2,17 +2,25 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 import os
+from dotenv import load_dotenv
 
-# Ruta de la base de datos
-DIRECTORIO_BASE = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-RUTA_BD = os.path.join(DIRECTORIO_BASE, "supermaintex.db")
+# Cargar variables de entorno
+load_dotenv()
 
-# Crear URL de conexión
-SQLALCHEMY_DATABASE_URL = f"sqlite:///{RUTA_BD}"
+# Obtener la URL de conexión desde las variables de entorno
+DATABASE_URL = os.getenv("DATABASE_URL", "db_name")
 
-# Crear motor de base de datos
+# Corregir el prefijo de la URL si es necesario (postgres:// -> postgresql://)
+if DATABASE_URL.startswith("postgres://"):
+    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+
+# Crear motor de base de datos para PostgreSQL
 motor = create_engine(
-    SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False}
+    DATABASE_URL,
+    pool_size=5,
+    max_overflow=10,
+    pool_timeout=30,
+    pool_recycle=1800
 )
 
 # Crear sesión
