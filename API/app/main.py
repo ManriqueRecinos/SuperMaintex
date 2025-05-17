@@ -1,9 +1,14 @@
 from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
+import os
+from dotenv import load_dotenv
 from .db.database import motor, Base
 from .rutas import autenticacion, usuarios, roles, departamentos
 from .utilidades.seguridad import obtener_usuario_actual
 from .utilidades.inicializador import crear_datos_iniciales
+
+# Cargar variables de entorno
+load_dotenv()
 
 # Crear la aplicación FastAPI
 app = FastAPI(
@@ -38,7 +43,8 @@ async def raiz():
     return {
         "mensaje": "Bienvenido a la API de SuperMaintex",
         "documentación": "/docs",
-        "versión": "1.0.0"
+        "versión": "1.0.0",
+        "base_de_datos": "Neon PostgreSQL"
     }
 
 @app.get("/protegido", tags=["prueba"])
