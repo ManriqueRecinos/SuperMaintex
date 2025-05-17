@@ -2,9 +2,13 @@
 setup.py
 README.md
 
+<<<<<<< HEAD
 /API/.env
 
 /API/test_db_connection.py
+=======
+test_db_connection.py
+>>>>>>> a7993e5097e15be6e92089dfef6b8117d6dbc08d
 
 /API/app/__pycache__
 /API/app/db/__pycache__
