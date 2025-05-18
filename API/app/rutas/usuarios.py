@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from typing import List
 from ..db.database import obtener_db
 from ..modelos.modelos import Usuario
+from sqlalchemy.orm import joinedload
 from ..esquemas.esquemas import UsuarioCrear, Usuario as UsuarioSchema, UsuarioSinSensible, UsuarioActualizar
 from ..utilidades.seguridad import obtener_hash_contrasenia, obtener_usuario_actual
 
@@ -33,19 +34,22 @@ async def obtener_usuario_propio(usuario_actual: Usuario = Depends(obtener_usuar
     """
     return usuario_actual
 
-@router.get("/{id_usuario}", response_model=UsuarioSinSensible)
+@router.get("/{id_usuario}", response_model=UsuarioSchema)
 async def obtener_usuario(
     id_usuario: int, 
     db: Session = Depends(obtener_db),
     usuario_actual: Usuario = Depends(obtener_usuario_actual)
 ):
     """
-    Obtiene un usuario por su ID.
-    Solo accesible para usuarios autenticados.
+    Obtiene un usuario por su ID incluyendo su rol y departamento.
     """
-    usuario = db.query(Usuario).filter(Usuario.id == id_usuario).first()
+    usuario = db.query(Usuario)\
+                .options(joinedload(Usuario.rol), joinedload(Usuario.departamento))\
+                .filter(Usuario.id == id_usuario).first()
+    
     if usuario is None:
         raise HTTPException(status_code=404, detail="Usuario no encontrado")
+    
     return usuario
 
 @router.post("/", response_model=UsuarioSinSensible, status_code=status.HTTP_201_CREATED)

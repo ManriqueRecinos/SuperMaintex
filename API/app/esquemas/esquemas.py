@@ -58,7 +58,7 @@ class Usuario(UsuarioBase):
     fecha_creacion: datetime
     rol: Rol
     departamento: Departamento
-    
+
     class Config:
         orm_mode = True
 
@@ -68,8 +68,8 @@ class UsuarioSinSensible(BaseModel):
     usuario: str
     correo: EmailStr
     carnet: Optional[str]
-    id_rol: int
-    id_depa: int
+    rol: Rol
+    departamento: Departamento
     estado: int
     fecha_creacion: datetime
     
