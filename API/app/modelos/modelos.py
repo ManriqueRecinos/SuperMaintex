@@ -25,8 +25,9 @@ class Departamento(Base):
     descripcion = Column(Text, nullable=True)
     estado = Column(Integer, default=1, nullable=False)
     
-    # Relación con usuarios
+    # Relación con usuarios y empleados
     usuarios = relationship("Usuario", back_populates="departamento")
+    empleados = relationship("Empleado", back_populates="departamento")
     
     def __repr__(self):
         return f"Departamento(id={self.id}, depa={self.depa})"
@@ -56,38 +57,43 @@ class Computadora(Base):
     __tablename__ = "computadora"
     
     id = Column(Integer, Sequence('computadora_id_seq'), primary_key=True, index=True)
+    marca = Column(String(100), nullable=True)
+    modelo = Column(String(100), nullable=True)
     serie = Column(String(100), nullable=True)
-    nombre = Column(String(100), nullable=False)
     procesador = Column(String(100), nullable=True)
     ram = Column(String(100), nullable=True)
     disco_duro = Column(String(100), nullable=True)
     motherboard = Column(String(100), nullable=True)
+    sistema_operativo = Column(String(100), nullable=True)
     ip = Column(String(50), nullable=True)
     estado = Column(Integer, default=1, nullable=False)
     ultimo_mantenimiento = Column(DateTime(timezone=True), nullable=True)
+    id_empleado = Column(Integer, ForeignKey("empleado.id"), nullable=True)
 
-    # Relación con empleados
-    empleados = relationship("Empleado", back_populates="computadora")
+    # Relación con empleado
+    empleado = relationship("Empleado", back_populates="computadoras")
 
     def __repr__(self):
-        return f"Computadora(id={self.id}, nombre={self.nombre})"
+        return f"Computadora(id={self.id}, marca={self.marca}, modelo={self.modelo})"
 
 class Empleado(Base):
     __tablename__ = "empleado"
 
     id = Column(Integer, Sequence('empleado_id_seq'), primary_key=True, index=True)
     nombre = Column(String(150), nullable=False)
-    carnet = Column(String(20), nullable=False)
-    correo = Column(String(100), nullable=False)
-    id_depa = Column(Integer, ForeignKey("departamento.id"), nullable=False)
-    id_rol = Column(Integer, ForeignKey("rol.id"), nullable=False)
+    correo = Column(String(100), unique=True, nullable=False)
+    telefono = Column(String(20), nullable=True)
+    direccion = Column(Text, nullable=True)
+    carnet = Column(String(20), nullable=True)
+    fecha_ingreso = Column(DateTime(timezone=True), nullable=True)
+    id_departamento = Column(Integer, ForeignKey("departamento.id"), nullable=False)
+    id_rol = Column(Integer, ForeignKey("rol.id"), nullable=True)
     estado = Column(Integer, default=1, nullable=False)
-    id_computadora = Column(Integer, ForeignKey("computadora.id"), nullable=False)
 
     # Relaciones
-    rol = relationship("Rol")
-    departamento = relationship("Departamento")
-    computadora = relationship("Computadora", back_populates="empleados")
+    departamento = relationship("Departamento", back_populates="empleados")
+    rol = relationship("Rol")  # opcional, si quieres incluir detalles del rol en el empleado
+    computadoras = relationship("Computadora", back_populates="empleado")
 
     def __repr__(self):
-        return f"Empleado(id={self.id}, nombre={self.nombre}, carnet={self.carnet})"
+        return f"Empleado(id={self.id}, nombre={self.nombre}, correo={self.correo})"

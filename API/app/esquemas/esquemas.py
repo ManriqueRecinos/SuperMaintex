@@ -88,15 +88,18 @@ class Token(BaseModel):
 class TokenDatos(BaseModel):
     id_usuario: Optional[int] = None
 
+# Esquema para Computadora
 class ComputadoraBase(BaseModel):
+    marca: Optional[str] = None
+    modelo: Optional[str] = None
     serie: Optional[str] = None
-    nombre: str
     procesador: Optional[str] = None
     ram: Optional[str] = None
     disco_duro: Optional[str] = None
     motherboard: Optional[str] = None
+    sistema_operativo: Optional[str] = None
     ip: Optional[str] = None
-    estado: int
+    estado: int = 1
     ultimo_mantenimiento: Optional[datetime] = None
     id_empleado: Optional[int] = None
 
@@ -104,49 +107,68 @@ class ComputadoraCrear(ComputadoraBase):
     pass
 
 class ComputadoraActualizar(BaseModel):
+    marca: Optional[str] = None
+    modelo: Optional[str] = None
     serie: Optional[str] = None
-    nombre: Optional[str] = None
     procesador: Optional[str] = None
     ram: Optional[str] = None
     disco_duro: Optional[str] = None
     motherboard: Optional[str] = None
+    sistema_operativo: Optional[str] = None
     ip: Optional[str] = None
     estado: Optional[int] = None
     ultimo_mantenimiento: Optional[datetime] = None
     id_empleado: Optional[int] = None
 
-class Computadora(ComputadoraBase):
-    id: int
-
-    class Config:
-        orm_mode = True
-
+# Esquema para Empleado (actualizado para el frontend)
 class EmpleadoBase(BaseModel):
     nombre: str
-    carnet: str
     correo: EmailStr
-    id_depa: int
-    id_rol: int
-    estado: int
-    id_computadora: Optional[int]
+    telefono: Optional[str] = None
+    direccion: Optional[str] = None
+    carnet: Optional[str] = None
+    fecha_ingreso: Optional[datetime] = None
+    id_departamento: int
+    id_rol: Optional[int] = None
+    estado: int = 1
 
 class EmpleadoCrear(EmpleadoBase):
     pass
 
 class EmpleadoActualizar(BaseModel):
     nombre: Optional[str] = None
-    carnet: Optional[str] = None
     correo: Optional[EmailStr] = None
-    id_depa: Optional[int] = None
+    telefono: Optional[str] = None
+    direccion: Optional[str] = None
+    carnet: Optional[str] = None
+    fecha_ingreso: Optional[datetime] = None
+    id_departamento: Optional[int] = None
     id_rol: Optional[int] = None
     estado: Optional[int] = None
-    id_computadora: Optional[int] = None
+
+# Definición de Computadora para uso en Empleado
+class ComputadoraSimple(BaseModel):
+    id: int
+    marca: Optional[str] = None
+    modelo: Optional[str] = None
+    serie: Optional[str] = None
+    
+    class Config:
+        orm_mode = True
 
 class Empleado(EmpleadoBase):
     id: int
-    rol: Rol
     departamento: Departamento
-    computadora: Optional[Computadora]
+    rol: Optional[Rol] = None
+    computadoras: List[ComputadoraSimple] = []
+
+    class Config:
+        orm_mode = True
+
+# Definición completa de Computadora
+class Computadora(ComputadoraBase):
+    id: int
+    empleado: Optional[Empleado] = None
 
     class Config:
         orm_mode = True

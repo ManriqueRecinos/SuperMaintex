@@ -25,6 +25,7 @@ export default function Sidebar({ userData, onLogout }) {
   const menuItems = [
     { path: "/dashboard", icon: <MdDashboard size={20} />, label: "Dashboard" },
     { path: "/usuarios", icon: <MdPerson size={20} />, label: "Técnicos" },
+    { path: "/empleados", icon: <MdPeople size={20} />, label: "Empleados" },
     { path: "/computadoras", icon: <MdComputer size={20} />, label: "Computadoras" },
     { path: "/impresoras", icon: <MdPrint size={20} />, label: "Impresoras" },
     { path: "/centro-costos", icon: <MdAttachMoney size={20} />, label: "Centro de Costos" },
@@ -88,7 +89,7 @@ export default function Sidebar({ userData, onLogout }) {
           <button
             onClick={() => setConfigOpen(!configOpen)}
             className={`w-full flex items-center ${isOpen ? "justify-start" : "justify-center"} gap-3 px-4 py-3 transition-all duration-200 ${
-              location.pathname.includes("/config")
+              location.pathname.includes("/departamentos") || location.pathname.includes("/roles")
                 ? "bg-indigo-500 text-white border-l-4 border-white"
                 : "hover:bg-indigo-700"
             }`}
