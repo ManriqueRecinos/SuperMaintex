@@ -1,9 +1,10 @@
 from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy.orm import joinedload
 import os
 from dotenv import load_dotenv
 from .db.database import motor, Base
-from .rutas import autenticacion, usuarios, roles, departamentos
+from .rutas import autenticacion, usuarios, roles, departamentos, computadoras, empleados
 from .utilidades.seguridad import obtener_usuario_actual
 from .utilidades.inicializador import crear_datos_iniciales
 
@@ -34,6 +35,8 @@ app.include_router(autenticacion.router)
 app.include_router(usuarios.router)
 app.include_router(roles.router)
 app.include_router(departamentos.router)
+app.include_router(computadoras.router)
+app.include_router(empleados.router)
 
 @app.get("/", tags=["raíz"])
 async def raiz():

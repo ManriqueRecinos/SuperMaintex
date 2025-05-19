@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from ..db.database import SesionLocal
-from ..modelos.modelos import Rol, Departamento, Usuario
+from ..modelos.modelos import Computadora, Empleado, Rol, Departamento, Usuario
 from .seguridad import obtener_hash_contrasenia
 
 def crear_datos_iniciales():

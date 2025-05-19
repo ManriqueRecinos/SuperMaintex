@@ -51,3 +51,43 @@ class Usuario(Base):
     
     def __repr__(self):
         return f"Usuario(id={self.id}, usuario={self.usuario}, correo={self.correo})"
+    
+class Computadora(Base):
+    __tablename__ = "computadora"
+    
+    id = Column(Integer, Sequence('computadora_id_seq'), primary_key=True, index=True)
+    serie = Column(String(100), nullable=True)
+    nombre = Column(String(100), nullable=False)
+    procesador = Column(String(100), nullable=True)
+    ram = Column(String(100), nullable=True)
+    disco_duro = Column(String(100), nullable=True)
+    motherboard = Column(String(100), nullable=True)
+    ip = Column(String(50), nullable=True)
+    estado = Column(Integer, default=1, nullable=False)
+    ultimo_mantenimiento = Column(DateTime(timezone=True), nullable=True)
+
+    # Relación con empleados
+    empleados = relationship("Empleado", back_populates="computadora")
+
+    def __repr__(self):
+        return f"Computadora(id={self.id}, nombre={self.nombre})"
+
+class Empleado(Base):
+    __tablename__ = "empleado"
+
+    id = Column(Integer, Sequence('empleado_id_seq'), primary_key=True, index=True)
+    nombre = Column(String(150), nullable=False)
+    carnet = Column(String(20), nullable=False)
+    correo = Column(String(100), nullable=False)
+    id_depa = Column(Integer, ForeignKey("departamento.id"), nullable=False)
+    id_rol = Column(Integer, ForeignKey("rol.id"), nullable=False)
+    estado = Column(Integer, default=1, nullable=False)
+    id_computadora = Column(Integer, ForeignKey("computadora.id"), nullable=False)
+
+    # Relaciones
+    rol = relationship("Rol")
+    departamento = relationship("Departamento")
+    computadora = relationship("Computadora", back_populates="empleados")
+
+    def __repr__(self):
+        return f"Empleado(id={self.id}, nombre={self.nombre}, carnet={self.carnet})"

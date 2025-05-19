@@ -87,3 +87,66 @@ class Token(BaseModel):
 
 class TokenDatos(BaseModel):
     id_usuario: Optional[int] = None
+
+class ComputadoraBase(BaseModel):
+    serie: Optional[str] = None
+    nombre: str
+    procesador: Optional[str] = None
+    ram: Optional[str] = None
+    disco_duro: Optional[str] = None
+    motherboard: Optional[str] = None
+    ip: Optional[str] = None
+    estado: int
+    ultimo_mantenimiento: Optional[datetime] = None
+    id_empleado: Optional[int] = None
+
+class ComputadoraCrear(ComputadoraBase):
+    pass
+
+class ComputadoraActualizar(BaseModel):
+    serie: Optional[str] = None
+    nombre: Optional[str] = None
+    procesador: Optional[str] = None
+    ram: Optional[str] = None
+    disco_duro: Optional[str] = None
+    motherboard: Optional[str] = None
+    ip: Optional[str] = None
+    estado: Optional[int] = None
+    ultimo_mantenimiento: Optional[datetime] = None
+    id_empleado: Optional[int] = None
+
+class Computadora(ComputadoraBase):
+    id: int
+
+    class Config:
+        orm_mode = True
+
+class EmpleadoBase(BaseModel):
+    nombre: str
+    carnet: str
+    correo: EmailStr
+    id_depa: int
+    id_rol: int
+    estado: int
+    id_computadora: Optional[int]
+
+class EmpleadoCrear(EmpleadoBase):
+    pass
+
+class EmpleadoActualizar(BaseModel):
+    nombre: Optional[str] = None
+    carnet: Optional[str] = None
+    correo: Optional[EmailStr] = None
+    id_depa: Optional[int] = None
+    id_rol: Optional[int] = None
+    estado: Optional[int] = None
+    id_computadora: Optional[int] = None
+
+class Empleado(EmpleadoBase):
+    id: int
+    rol: Rol
+    departamento: Departamento
+    computadora: Optional[Computadora]
+
+    class Config:
+        orm_mode = True
